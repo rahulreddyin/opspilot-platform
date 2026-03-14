@@ -1,5 +1,7 @@
 package com.opspilot.platform.auth.controller;
 
+import com.opspilot.platform.auth.dto.LoginRequest;
+import com.opspilot.platform.auth.dto.LoginResponse;
 import com.opspilot.platform.auth.dto.RegisterRequest;
 import com.opspilot.platform.auth.dto.RegisterResponse;
 import com.opspilot.platform.auth.service.AuthService;
@@ -19,5 +21,10 @@ public class AuthController {
     @PostMapping("/register")
     public RegisterResponse register(@Valid @RequestBody RegisterRequest request) {
         return authService.register(request);
+    }
+
+    @PostMapping("/login")
+    public LoginResponse login(@Valid @RequestBody LoginRequest request) {
+        return authService.login(request);
     }
 }
