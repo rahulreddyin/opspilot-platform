@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS tasks (
+    id BIGSERIAL PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    description VARCHAR(1000),
+    status VARCHAR(50) NOT NULL,
+    assigned_to_email VARCHAR(150),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
