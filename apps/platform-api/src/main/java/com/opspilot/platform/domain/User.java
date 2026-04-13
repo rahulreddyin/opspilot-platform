@@ -2,6 +2,7 @@ package com.opspilot.platform.domain;
 
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -10,6 +11,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<Role> roles;
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -20,61 +27,50 @@ public class User {
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
-    @Column(nullable = false, length = 50)
-    private String role;
-
-    @Column(nullable = false)
-    private Boolean enabled = true;
-
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    public User() {
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
     public void setCreatedAt(Instant createdAt) {

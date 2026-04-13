@@ -1,23 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  createTask,
-  deleteTask,
-  getMyTasks,
-  updateTask,
-  updateTaskStatus,
-} from "../api/taskApi";
-import { getMyIncidents } from "../api/IncidentAPI";
-import { getToken, logout } from "../utils/auth";
+  createIncident,
+  getMyIncidents,
+  updateIncidentStatus,
+} from "../api/IncidentAPI";
+import { logout } from "../utils/auth";
 
-function DashboardPage() {
+function IncidentsPage() {
   const navigate = useNavigate();
 
-  const [tasks, setTasks] = useState([]);
   const [incidents, setIncidents] = useState([]);
-  const [loadingTasks, setLoadingTasks] = useState(true);
   const [loadingIncidents, setLoadingIncidents] = useState(true);
-  const [taskError, setTaskError] = useState("");
+  const [incidentError, setIncidentError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,81 +21,52 @@ function DashboardPage() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    assignedToEmail: "",
-    priority: "MEDIUM",
-    dueDate: "",
-    incidentId: "",
+    severity: "HIGH",
+    impactedService: "",
+    ownerEmail: "",
   });
 
-  const [editingTaskId, setEditingTaskId] = useState(null);
-  const [editingOriginalAssignedToEmail, setEditingOriginalAssignedToEmail] = useState("");
-  const [creatingOrUpdatingTask, setCreatingOrUpdatingTask] = useState(false);
+  const [creatingIncident, setCreatingIncident] = useState(false);
 
   const showSuccess = (message) => {
     setSuccessMessage(message);
     setTimeout(() => {
       setSuccessMessage("");
-    }, 3000);
-  };
-
-  const clearForm = () => {
-    setFormData({
-      title: "",
-      description: "",
-      assignedToEmail: "",
-      priority: "MEDIUM",
-      dueDate: "",
-      incidentId: "",
-    });
-    setEditingTaskId(null);
-    setEditingOriginalAssignedToEmail("");
-  };
-
-  const loadTasks = async () => {
-    try {
-      setLoadingTasks(true);
-      setTaskError("");
-      const data = await getMyTasks();
-      setTasks(data);
-    } catch (error) {
-      console.log("LOAD TASKS ERROR:", error);
-      setTaskError("Failed to load tasks.");
-    } finally {
-      setLoadingTasks(false);
-    }
+    }, 2500);
   };
 
   const loadIncidents = async () => {
     try {
       setLoadingIncidents(true);
+      setIncidentError("");
       const data = await getMyIncidents();
       setIncidents(data);
     } catch (error) {
       console.log("LOAD INCIDENTS ERROR:", error);
+      setIncidentError("Failed to load incidents.");
     } finally {
       setLoadingIncidents(false);
     }
   };
 
   useEffect(() => {
-    loadTasks();
     loadIncidents();
   }, []);
 
-  const filteredTasks = useMemo(() => {
-    return tasks.filter((task) => {
+  const filteredIncidents = useMemo(() => {
+    return incidents.filter((incident) => {
       const matchesSearch =
-        task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        task.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        task.assignedToEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (task.incidentTitle || "").toLowerCase().includes(searchTerm.toLowerCase());
+        incident.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        incident.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        incident.impactedService.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        incident.ownerEmail.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesStatus =
-        statusFilter === "ALL" ? true : task.status === statusFilter;
+        statusFilter === "ALL" ? true : incident.status === statusFilter;
 
       return matchesSearch && matchesStatus;
     });
-  }, [tasks, searchTerm, statusFilter]);
+  }, [incidents, searchTerm, statusFilter]);
 
   const handleLogout = () => {
     logout();
@@ -114,120 +80,56 @@ function DashboardPage() {
     });
   };
 
-  const buildTaskPayload = () => {
-    return {
-      title: formData.title,
-      description: formData.description,
-      assignedToEmail: formData.assignedToEmail,
-      priority: formData.priority,
-      dueDate: formData.dueDate ? `${formData.dueDate}T00:00:00Z` : null,
-      incidentId: formData.incidentId ? Number(formData.incidentId) : null,
-    };
-  };
-
-  const handleCreateOrUpdateTask = async (e) => {
+  const handleCreateIncident = async (e) => {
     e.preventDefault();
-    setTaskError("");
-    setCreatingOrUpdatingTask(true);
+    setIncidentError("");
+    setCreatingIncident(true);
 
     try {
-      const payload = buildTaskPayload();
-
-      if (editingTaskId) {
-        await updateTask(editingTaskId, payload);
-
-        if (
-          editingOriginalAssignedToEmail &&
-          editingOriginalAssignedToEmail !== payload.assignedToEmail
-        ) {
-          showSuccess(
-            `Task updated and reassigned to ${payload.assignedToEmail}. It may disappear from "My Tasks" if it is no longer assigned to you.`
-          );
-        } else {
-          showSuccess("Task updated successfully.");
-        }
-      } else {
-        await createTask(payload);
-        showSuccess("Task created successfully.");
-      }
-
-      clearForm();
-      await loadTasks();
+      await createIncident(formData);
+      showSuccess("Incident created successfully.");
+      setFormData({
+        title: "",
+        description: "",
+        severity: "HIGH",
+        impactedService: "",
+        ownerEmail: "",
+      });
+      await loadIncidents();
     } catch (error) {
-      console.log("CREATE/UPDATE TASK ERROR:", error);
-      setTaskError(
+      console.log("CREATE INCIDENT ERROR:", error);
+      setIncidentError(
         error.response?.data?.message ||
           error.response?.data?.error ||
-          "Failed to save task."
+          "Failed to create incident."
       );
     } finally {
-      setCreatingOrUpdatingTask(false);
+      setCreatingIncident(false);
     }
   };
 
-  const handleEditTask = (task) => {
-    setEditingTaskId(task.id);
-    setEditingOriginalAssignedToEmail(task.assignedToEmail);
-    setFormData({
-      title: task.title,
-      description: task.description,
-      assignedToEmail: task.assignedToEmail,
-      priority: task.priority || "MEDIUM",
-      dueDate: task.dueDate || "",
-      incidentId: task.incidentId ? String(task.incidentId) : "",
-    });
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  const handleCancelEdit = () => {
-    clearForm();
-  };
-
-  const handleStatusChange = async (taskId, newStatus) => {
+  const handleStatusChange = async (incidentId, newStatus) => {
     try {
-      setTaskError("");
-      await updateTaskStatus(taskId, newStatus);
-      showSuccess("Task status updated.");
-      await loadTasks();
+      setIncidentError("");
+      await updateIncidentStatus(incidentId, newStatus);
+      showSuccess("Incident status updated.");
+      await loadIncidents();
     } catch (error) {
-      console.log("UPDATE STATUS ERROR:", error);
-      setTaskError(
+      console.log("UPDATE INCIDENT STATUS ERROR:", error);
+      setIncidentError(
         error.response?.data?.message ||
           error.response?.data?.error ||
-          "Failed to update task status."
+          "Failed to update incident status."
       );
     }
   };
 
-  const handleDeleteTask = async (taskId) => {
-    try {
-      setTaskError("");
-      await deleteTask(taskId);
-      showSuccess("Task deleted successfully.");
-      await loadTasks();
-
-      if (editingTaskId === taskId) {
-        clearForm();
-      }
-    } catch (error) {
-      console.log("DELETE TASK ERROR:", error);
-      setTaskError(
-        error.response?.data?.message ||
-          error.response?.data?.error ||
-          "Failed to delete task. Only admins can delete tasks."
-      );
-    }
-  };
-
-  const totalTasks = tasks.length;
-  const openTasks = tasks.filter((task) => task.status === "OPEN").length;
-  const inProgressTasks = tasks.filter((task) => task.status === "IN_PROGRESS").length;
-  const doneTasks = tasks.filter((task) => task.status === "DONE").length;
-  const linkedTasks = tasks.filter((task) => task.incidentId).length;
+  const totalIncidents = incidents.length;
+  const openIncidents = incidents.filter((i) => i.status === "OPEN").length;
+  const investigatingIncidents = incidents.filter(
+    (i) => i.status === "INVESTIGATING"
+  ).length;
+  const resolvedIncidents = incidents.filter((i) => i.status === "RESOLVED").length;
 
   return (
     <div
@@ -263,7 +165,7 @@ function DashboardPage() {
                 color: "#111827",
               }}
             >
-              OpsPilot Dashboard
+              Incident Management
             </h1>
             <p
               style={{
@@ -272,7 +174,7 @@ function DashboardPage() {
                 fontSize: "15px",
               }}
             >
-              Logged in with token: {getToken() ? "Yes" : "No"}
+              Track outages, service degradation, and operational issues.
             </p>
           </div>
 
@@ -283,29 +185,17 @@ function DashboardPage() {
               flexWrap: "wrap",
             }}
           >
-            <Link to="/incidents" style={navButtonStyle}>
-              View Incidents
+            <Link to="/dashboard" style={navButtonStyle}>
+              Back to Dashboard
             </Link>
-
-            <button
-              onClick={handleLogout}
-              style={{
-                backgroundColor: "#dc2626",
-                color: "#ffffff",
-                border: "none",
-                padding: "12px 18px",
-                borderRadius: "8px",
-                fontWeight: "600",
-                cursor: "pointer",
-              }}
-            >
+            <button onClick={handleLogout} style={logoutButtonStyle}>
               Logout
             </button>
           </div>
         </div>
 
         {successMessage && <Toast message={successMessage} type="success" />}
-        {taskError && <Toast message={taskError} type="error" />}
+        {incidentError && <Toast message={incidentError} type="error" />}
 
         <div
           style={{
@@ -315,11 +205,10 @@ function DashboardPage() {
             marginBottom: "24px",
           }}
         >
-          <StatCard label="Total Tasks" value={totalTasks} />
-          <StatCard label="Open" value={openTasks} />
-          <StatCard label="In Progress" value={inProgressTasks} />
-          <StatCard label="Done" value={doneTasks} />
-          <StatCard label="Linked to Incidents" value={linkedTasks} />
+          <StatCard label="Total Incidents" value={totalIncidents} />
+          <StatCard label="Open" value={openIncidents} />
+          <StatCard label="Investigating" value={investigatingIncidents} />
+          <StatCard label="Resolved" value={resolvedIncidents} />
         </div>
 
         <div
@@ -345,14 +234,14 @@ function DashboardPage() {
                 color: "#111827",
               }}
             >
-              {editingTaskId ? "Edit Task" : "Create Task"}
+              Create Incident
             </h2>
 
-            <form onSubmit={handleCreateOrUpdateTask}>
+            <form onSubmit={handleCreateIncident}>
               <input
                 type="text"
                 name="title"
-                placeholder="Task title"
+                placeholder="Incident title"
                 value={formData.title}
                 onChange={handleChange}
                 required
@@ -361,7 +250,7 @@ function DashboardPage() {
 
               <textarea
                 name="description"
-                placeholder="Task description"
+                placeholder="Incident description"
                 value={formData.description}
                 onChange={handleChange}
                 required
@@ -372,19 +261,9 @@ function DashboardPage() {
                 }}
               />
 
-              <input
-                type="email"
-                name="assignedToEmail"
-                placeholder="Assign to email"
-                value={formData.assignedToEmail}
-                onChange={handleChange}
-                required
-                style={inputStyle}
-              />
-
               <select
-                name="priority"
-                value={formData.priority}
+                name="severity"
+                value={formData.severity}
                 onChange={handleChange}
                 style={inputStyle}
               >
@@ -395,74 +274,42 @@ function DashboardPage() {
               </select>
 
               <input
-                type="date"
-                name="dueDate"
-                value={formData.dueDate}
+                type="text"
+                name="impactedService"
+                placeholder="Impacted service (e.g. payment-service)"
+                value={formData.impactedService}
                 onChange={handleChange}
+                required
                 style={inputStyle}
               />
 
-              <select
-                name="incidentId"
-                value={formData.incidentId}
+              <input
+                type="email"
+                name="ownerEmail"
+                placeholder="Owner email"
+                value={formData.ownerEmail}
                 onChange={handleChange}
+                required
                 style={inputStyle}
-                disabled={loadingIncidents}
-              >
-                <option value="">
-                  {loadingIncidents ? "Loading incidents..." : "No linked incident"}
-                </option>
-                {incidents.map((incident) => (
-                  <option key={incident.id} value={incident.id}>
-                    #{incident.id} - {incident.title}
-                  </option>
-                ))}
-              </select>
+              />
 
               <button
                 type="submit"
-                disabled={creatingOrUpdatingTask}
+                disabled={creatingIncident}
                 style={{
                   width: "100%",
                   padding: "14px",
-                  backgroundColor: creatingOrUpdatingTask ? "#93c5fd" : "#2563eb",
+                  backgroundColor: creatingIncident ? "#93c5fd" : "#2563eb",
                   color: "#ffffff",
                   border: "none",
                   borderRadius: "8px",
                   fontSize: "16px",
                   fontWeight: "600",
-                  cursor: creatingOrUpdatingTask ? "not-allowed" : "pointer",
+                  cursor: creatingIncident ? "not-allowed" : "pointer",
                 }}
               >
-                {creatingOrUpdatingTask
-                  ? editingTaskId
-                    ? "Updating Task..."
-                    : "Creating Task..."
-                  : editingTaskId
-                  ? "Update Task"
-                  : "Create Task"}
+                {creatingIncident ? "Creating Incident..." : "Create Incident"}
               </button>
-
-              {editingTaskId && (
-                <button
-                  type="button"
-                  onClick={handleCancelEdit}
-                  style={{
-                    width: "100%",
-                    padding: "14px",
-                    backgroundColor: "#e5e7eb",
-                    color: "#111827",
-                    border: "none",
-                    borderRadius: "8px",
-                    fontSize: "16px",
-                    fontWeight: "600",
-                    cursor: "pointer",
-                    marginTop: "12px",
-                  }}
-                >
-                  Cancel Edit
-                </button>
-              )}
             </form>
           </div>
 
@@ -490,7 +337,7 @@ function DashboardPage() {
                   color: "#111827",
                 }}
               >
-                My Tasks
+                My Incidents
               </h2>
 
               <div
@@ -502,7 +349,7 @@ function DashboardPage() {
               >
                 <input
                   type="text"
-                  placeholder="Search tasks..."
+                  placeholder="Search incidents..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   style={{
@@ -524,16 +371,16 @@ function DashboardPage() {
                 >
                   <option value="ALL">All Statuses</option>
                   <option value="OPEN">OPEN</option>
-                  <option value="IN_PROGRESS">IN_PROGRESS</option>
-                  <option value="DONE">DONE</option>
+                  <option value="INVESTIGATING">INVESTIGATING</option>
+                  <option value="RESOLVED">RESOLVED</option>
                 </select>
               </div>
             </div>
 
-            {loadingTasks ? (
-              <p style={{ color: "#4b5563" }}>Loading tasks...</p>
-            ) : filteredTasks.length === 0 ? (
-              <p style={{ color: "#4b5563" }}>No matching tasks found.</p>
+            {loadingIncidents ? (
+              <p style={{ color: "#4b5563" }}>Loading incidents...</p>
+            ) : filteredIncidents.length === 0 ? (
+              <p style={{ color: "#4b5563" }}>No matching incidents found.</p>
             ) : (
               <div
                 style={{
@@ -541,9 +388,9 @@ function DashboardPage() {
                   gap: "16px",
                 }}
               >
-                {filteredTasks.map((task) => (
+                {filteredIncidents.map((incident) => (
                   <div
-                    key={task.id}
+                    key={incident.id}
                     style={{
                       border: "1px solid #e5e7eb",
                       borderRadius: "12px",
@@ -568,7 +415,7 @@ function DashboardPage() {
                             color: "#111827",
                           }}
                         >
-                          {task.title}
+                          {incident.title}
                         </h3>
                         <p
                           style={{
@@ -577,7 +424,7 @@ function DashboardPage() {
                             color: "#4b5563",
                           }}
                         >
-                          {task.description}
+                          {incident.description}
                         </p>
                       </div>
 
@@ -588,8 +435,8 @@ function DashboardPage() {
                           flexWrap: "wrap",
                         }}
                       >
-                        <Badge label={task.status} />
-                        <Badge label={task.priority} />
+                        <Badge label={incident.status} />
+                        <Badge label={incident.severity} />
                       </div>
                     </div>
 
@@ -602,13 +449,15 @@ function DashboardPage() {
                         marginBottom: "14px",
                       }}
                     >
-                      <span><strong>Assigned To:</strong> {task.assignedToEmail}</span>
-                      <span><strong>Due Date:</strong> {task.dueDate || "Not set"}</span>
                       <span>
-                        <strong>Linked Incident:</strong>{" "}
-                        {task.incidentTitle ? `#${task.incidentId} - ${task.incidentTitle}` : "None"}
+                        <strong>Impacted Service:</strong> {incident.impactedService}
                       </span>
-                      <span><strong>Created At:</strong> {task.createdAt}</span>
+                      <span>
+                        <strong>Owner:</strong> {incident.ownerEmail}
+                      </span>
+                      <span>
+                        <strong>Created At:</strong> {incident.createdAt}
+                      </span>
                     </div>
 
                     <div
@@ -618,35 +467,27 @@ function DashboardPage() {
                         flexWrap: "wrap",
                       }}
                     >
-                      <button onClick={() => handleEditTask(task)} style={secondaryButtonStyle}>
-                        Edit
-                      </button>
-
-                      <button onClick={() => handleStatusChange(task.id, "OPEN")} style={secondaryButtonStyle}>
+                      <button
+                        onClick={() => handleStatusChange(incident.id, "OPEN")}
+                        style={secondaryButtonStyle}
+                      >
                         OPEN
                       </button>
 
                       <button
-                        onClick={() => handleStatusChange(task.id, "IN_PROGRESS")}
+                        onClick={() =>
+                          handleStatusChange(incident.id, "INVESTIGATING")
+                        }
                         style={secondaryButtonStyle}
                       >
-                        IN_PROGRESS
-                      </button>
-
-                      <button onClick={() => handleStatusChange(task.id, "DONE")} style={secondaryButtonStyle}>
-                        DONE
+                        INVESTIGATING
                       </button>
 
                       <button
-                        onClick={() => handleDeleteTask(task.id)}
-                        style={{
-                          ...secondaryButtonStyle,
-                          backgroundColor: "#fee2e2",
-                          color: "#b91c1c",
-                          border: "1px solid #fecaca",
-                        }}
+                        onClick={() => handleStatusChange(incident.id, "RESOLVED")}
+                        style={secondaryButtonStyle}
                       >
-                        Delete
+                        RESOLVED
                       </button>
                     </div>
                   </div>
@@ -760,4 +601,14 @@ const navButtonStyle = {
   display: "inline-block",
 };
 
-export default DashboardPage;
+const logoutButtonStyle = {
+  backgroundColor: "#dc2626",
+  color: "#ffffff",
+  border: "none",
+  padding: "12px 18px",
+  borderRadius: "8px",
+  fontWeight: "600",
+  cursor: "pointer",
+};
+
+export default IncidentsPage;
