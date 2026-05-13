@@ -1,19 +1,10 @@
 HELP.md
-
-# ENV FILES
-.env
-.env.local
-.env.*.local
-
-# MAVEN / JAVA
 target/
+.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-# MAVEN WRAPPER
-.mvn/wrapper/maven-wrapper.jar
-
-# SPRING TOOL SUITE
+### STS ###
 .apt_generated
 .classpath
 .factorypath
@@ -22,13 +13,13 @@ target/
 .springBeans
 .sts4-cache
 
-# INTELLIJ
+### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
 
-# NETBEANS
+### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -38,16 +29,12 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-# VSCODE
+### VS Code ###
 .vscode/
 
-# NODE
+
+.env
+.env.local
+.env.*.local
 node_modules/
 dist/
-
-# LOGS
-*.log
-
-# OS FILES
-.DS_Store
-Thumbs.db

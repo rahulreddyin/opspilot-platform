@@ -1,0 +1,13 @@
+ALTER TABLE users
+ADD COLUMN IF NOT EXISTS verified BOOLEAN NOT NULL DEFAULT FALSE;
+
+CREATE TABLE IF NOT EXISTS email_verification_tokens (
+    id BIGSERIAL PRIMARY KEY,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    user_id BIGINT NOT NULL UNIQUE,
+    expiry_at TIMESTAMP NOT NULL,
+    used BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL,
+    CONSTRAINT fk_email_verification_user
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

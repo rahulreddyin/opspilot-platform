@@ -1,0 +1,12 @@
+CREATE TABLE teams (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+ALTER TABLE users
+ADD COLUMN team_id BIGINT;
+
+ALTER TABLE users
+ADD CONSTRAINT fk_user_team
+FOREIGN KEY (team_id)
+REFERENCES teams(id);

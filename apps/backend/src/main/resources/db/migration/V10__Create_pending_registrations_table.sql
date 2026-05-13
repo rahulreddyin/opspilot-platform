@@ -1,0 +1,12 @@
+CREATE TABLE pending_registrations (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(120) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    otp_code VARCHAR(6) NOT NULL,
+    otp_expiry_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    attempt_count INTEGER NOT NULL DEFAULT 0,
+    resend_count INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+);

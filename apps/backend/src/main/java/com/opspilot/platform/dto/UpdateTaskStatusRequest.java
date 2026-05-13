@@ -1,0 +1,20 @@
+package com.opspilot.platform.dto;
+
+import jakarta.validation.constraints.NotBlank;
+
+public class UpdateTaskStatusRequest {
+
+    @NotBlank
+    private String status;
+
+    public UpdateTaskStatusRequest() {
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}
