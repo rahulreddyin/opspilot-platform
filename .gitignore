@@ -51,3 +51,10 @@ dist/
 # OS FILES
 .DS_Store
 Thumbs.db
+
+
+.env
+.env.*
+!.env.example
+
+docker-compose.prod.yml
