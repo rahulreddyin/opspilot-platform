@@ -589,7 +589,7 @@ Incident is resolved and audit trail remains available
 
 ## Screenshots
 
-Recommended screenshots to include:
+![alt text](<Screenshot (88).png>)
 
 1. Login / registration page
 2. Admin team management
