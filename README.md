@@ -482,7 +482,7 @@ This enables version-controlled schema evolution.
 
 ### Docker Containers & Health Checks
 
-![Docker Health](.docs/screenshots/DockerHealth.png)
+![Docker Health](C:\Users\rahul\OneDrive\Documents\backend-projects\opspilot-platform\docs\screenshots\DockerHealth.png)
 
 ---
 
