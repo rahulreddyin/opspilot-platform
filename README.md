@@ -1,5 +1,3 @@
-# OpsPilot Platform
-
 <p align="center">
   <h1 align="center">OpsPilot Platform</h1>
   <p align="center">
@@ -53,7 +51,7 @@ Built using:
 
 # System Architecture
 
-![System Architecture](.docs/architecture/system-architecture.png)
+![System Architecture](.docs/architecture/opspilot-architecture.jpeg)
 
 ---
 
@@ -424,11 +422,11 @@ This enables version-controlled schema evolution.
 
 ### Login Page
 
-![Login](.docs/screenshots/login-page.png)
+![Login](.docs/screenshots/LoginPage.png)
 
 ### Registration Page
 
-![Register](.docs/screenshots/register-page.png)
+![Register](.docs/screenshots/RegisterPage.png)
 
 ---
 
@@ -436,11 +434,11 @@ This enables version-controlled schema evolution.
 
 ### Incident Dashboard
 
-![Incident Dashboard](.docs/screenshots/incident-dashboard.png)
+![Incident Dashboard](.docs/screenshots/IncidentDashboard.png)
 
 ### Incident Comments
 
-![Incident Comments](.docs/screenshots/incident-comment-modal.png)
+![Incident Comments](.docs/screenshots/IncidentComments.png)
 
 ---
 
@@ -448,15 +446,15 @@ This enables version-controlled schema evolution.
 
 ### Team Management
 
-![Team Management](.docs/screenshots/team-management.png)
+![Team Management](.docs/screenshots/ManageTeams.png)
 
 ### Team Workspace
 
-![Team Workspace](.docs/screenshots/team-workspace.png)
+![Team Workspace](.docs/screenshots/TeamWorkspace.png)
 
 ### Task Assignment
 
-![Task Assignment](.docs/screenshots/task-assignment.png)
+![Task Assignment](.docs/screenshots/TaskAssignment.png)
 
 ---
 
@@ -464,11 +462,11 @@ This enables version-controlled schema evolution.
 
 ### Live Notifications
 
-![Notifications](.docs/screenshots/notifications-panel.png)
+![Notifications](.docs/screenshots/LiveNotifications.png)
 
 ### Operational Dashboard
 
-![Dashboard](.docs/screenshots/dashboard.png)
+![Dashboard](.docs/screenshots/OperationalDashboard.png)
 
 ---
 
@@ -476,7 +474,7 @@ This enables version-controlled schema evolution.
 
 ### Swagger/OpenAPI
 
-![Swagger](.docs/screenshots/swagger-api.png)
+![Swagger](.docs/screenshots/Swagger.png)
 
 ---
 
@@ -484,7 +482,7 @@ This enables version-controlled schema evolution.
 
 ### Docker Containers & Health Checks
 
-![Docker Health](.docs/screenshots/docker-health-check.png)
+![Docker Health](.docs/screenshots/DockerHealth.png)
 
 ---
 
