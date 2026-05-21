@@ -422,11 +422,11 @@ This enables version-controlled schema evolution.
 
 ### Login Page
 
-![Login](.docs/screenshots/LoginPage.png)
+![Login](./docs/screenshots/LoginPage.png)
 
 ### Registration Page
 
-![Register](.docs/screenshots/RegisterPage.png)
+![Register](./docs/screenshots/RegisterPage.png)
 
 ---
 
@@ -434,11 +434,11 @@ This enables version-controlled schema evolution.
 
 ### Incident Dashboard
 
-![Incident Dashboard](.docs/screenshots/IncidentDashboard.png)
+![Incident Dashboard](./docs/screenshots/IncidentDashboard.png)
 
 ### Incident Comments
 
-![Incident Comments](.docs/screenshots/IncidentComments.png)
+![Incident Comments](./docs/screenshots/IncidentComments.png)
 
 ---
 
@@ -446,15 +446,15 @@ This enables version-controlled schema evolution.
 
 ### Team Management
 
-![Team Management](.docs/screenshots/ManageTeams.png)
+![Team Management](./docs/screenshots/ManageTeams.png)
 
 ### Team Workspace
 
-![Team Workspace](.docs/screenshots/TeamWorkspace.png)
+![Team Workspace](./docs/screenshots/TeamWorkspace.png)
 
 ### Task Assignment
 
-![Task Assignment](.docs/screenshots/TaskAssignment.png)
+![Task Assignment](./docs/screenshots/TaskAssignment.png)
 
 ---
 
@@ -462,11 +462,11 @@ This enables version-controlled schema evolution.
 
 ### Live Notifications
 
-![Notifications](.docs/screenshots/LiveNotifications.png)
+![Notifications](./docs/screenshots/LiveNotifications.png)
 
 ### Operational Dashboard
 
-![Dashboard](.docs/screenshots/OperationalDashboard.png)
+![Dashboard](./docs/screenshots/OperationalDashboard.png)
 
 ---
 
@@ -474,7 +474,7 @@ This enables version-controlled schema evolution.
 
 ### Swagger/OpenAPI
 
-![Swagger](.docs/screenshots/Swagger.png)
+![Swagger](./docs/screenshots/Swagger.png)
 
 ---
 
@@ -482,7 +482,7 @@ This enables version-controlled schema evolution.
 
 ### Docker Containers & Health Checks
 
-![Docker Health](C:\Users\rahul\OneDrive\Documents\backend-projects\opspilot-platform\docs\screenshots\DockerHealth.png)
+![Docker Health](./docs/screenshots/DockerHealth.png)
 
 ---
 
