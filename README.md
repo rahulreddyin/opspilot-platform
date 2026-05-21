@@ -1,282 +1,248 @@
-<div align="center">
-
 # OpsPilot Platform
 
-### Cloud-Native Real-Time Incident Response & Team Operations Platform
-
-OpsPilot is a production-style full-stack operations platform for incident management, team collaboration, task orchestration, live notifications, audit timelines, and role-based operational workflows.
-
-Built with **Spring Boot**, **React**, **PostgreSQL**, **Kafka**, **Redis**, **WebSockets**, **Docker**, and **Terraform-style infrastructure organization**.
-
-![Java](https://img.shields.io/badge/Java-17-red)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
-![React](https://img.shields.io/badge/React-19-blue)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
-![Kafka](https://img.shields.io/badge/Kafka-Event%20Streaming-black)
-![Redis](https://img.shields.io/badge/Redis-Cache%20%2F%20Rate%20Limit-red)
-![WebSockets](https://img.shields.io/badge/WebSockets-STOMP%20%2B%20SockJS-success)
-![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED)
-![JWT](https://img.shields.io/badge/Auth-JWT-orange)
-
-</div>
+<p align="center">
+  <h1 align="center">OpsPilot Platform</h1>
+  <p align="center">
+    Cloud-Native Real-Time Incident Response & Team Operations Platform
+  </p>
+</p>
 
 ---
 
-## Overview
+OpsPilot is a production-style full-stack operational platform inspired by real-world SRE, DevOps, cloud operations, and incident management workflows.
 
-OpsPilot is an enterprise-style operational platform inspired by real-world **SRE**, **DevOps**, **platform engineering**, and **cloud operations** workflows.
+The platform enables teams to:
 
-The system allows teams to create and manage production incidents, assign owners, coordinate operational tasks, track incident timelines, receive live notifications, and manage user/team access through role-based authorization.
+- Create and manage production incidents
+- Coordinate operational tasks
+- Manage teams and role-based access
+- Receive real-time notifications
+- Track operational activity timelines
+- Collaborate across engineering workflows
+- Monitor operational readiness
 
-Unlike a traditional CRUD application, OpsPilot includes real-time synchronization using **Spring WebSockets with STOMP/SockJS**, event-oriented backend services, Kafka topic/listener infrastructure, JWT-secured APIs, audit logging, Dockerized deployment, and production-style health monitoring.
+Built using:
+
+- Spring Boot
+- React + Vite
+- PostgreSQL
+- Kafka
+- Redis
+- WebSockets (STOMP/SockJS)
+- Docker
+- Terraform-style infrastructure organization
 
 ---
 
 ## Key Highlights
 
-- Real-time incident and task updates using **WebSockets, STOMP, and SockJS**
-- Secure authentication with **JWT** and protected API routes
-- Role-based access control for **Admin**, **Incident Manager**, **Team Lead**, and **User** workflows
-- Incident lifecycle management with ownership, severity, impacted service, comments, and timeline history
-- Team workspace for operational task assignment and execution tracking
-- Live notification center with unread counts and user-specific notification channels
-- Activity feed and audit timeline for operational traceability
-- Kafka configuration, topics, consumers, and listener container factories for event-streaming workflows
-- Docker Compose orchestration for backend, frontend, PostgreSQL, Redis, Kafka, and Zookeeper
-- AWS EC2 deployment-ready configuration using production compose files
-- Swagger/OpenAPI documentation for REST APIs
-- Flyway database migrations for schema versioning
+- Real-time operational updates using WebSockets + STOMP
+- Kafka event-streaming architecture
+- Secure JWT authentication & role-based authorization
+- Team collaboration workflows
+- Incident lifecycle management
+- Task orchestration system
+- Live notifications panel
+- Activity timeline & audit logging
+- Dockerized multi-service deployment
+- Swagger/OpenAPI integration
+- Health monitoring with Spring Boot Actuator
+- Production-oriented project structure
 
 ---
 
-## Core Modules
+# System Architecture
 
-### Authentication & Authorization
+![System Architecture](.docs/architecture/system-architecture.png)
 
-OpsPilot includes a security layer built around JWT-based authentication and role-based authorization.
+---
 
-**Implemented capabilities:**
+# Core Features
+
+## Authentication & Authorization
 
 - User registration and login
-- Email verification / OTP-style onboarding flow
 - JWT token generation and validation
 - Protected REST APIs
-- Role-aware frontend navigation
-- Admin-only team and role management
+- Role-based authorization
+- Role-aware frontend rendering
 - BCrypt password hashing
-- Security filters for request authentication
-- Permission service for role-based access decisions
+- Security filters and request authentication
 
-**Roles supported:**
+### Supported Roles
 
 | Role | Purpose |
 |---|---|
-| `ADMIN` | Platform administration, team management, role assignment |
-| `INCIDENT_MANAGER` | Incident ownership and operational coordination |
-| `TEAM_LEAD` | Team workspace coordination and task oversight |
-| `USER` | Standard assigned-user access |
+| ADMIN | Platform administration and role management |
+| INCIDENT_MANAGER | Incident coordination and ownership |
+| TEAM_LEAD | Team operations and task oversight |
+| USER | General operational workflows |
 
 ---
 
-### Incident Management
+## Incident Management
 
 The incident module simulates real operational incident-response workflows used by production engineering teams.
 
-**Features:**
+### Features
 
 - Create production incidents
-- Assign incident owner by email
-- Track severity and impacted service
+- Assign incident owners
+- Track incident severity
 - Update incident status
-- Add incident comments
-- View incident timeline/activity history
-- Filter and search incidents
-- Receive live incident updates across active clients
+- Add operational comments
+- Maintain incident timelines
+- Search and filter incidents
+- Receive live incident updates
 
-**Supported incident lifecycle:**
+### Supported Incident Status
 
 | Status | Meaning |
 |---|---|
-| `OPEN` | Incident created and awaiting action |
-| `INVESTIGATING` | Active triage / root-cause analysis |
-| `IN_PROGRESS` | Remediation work in progress |
-| `RESOLVED` | Issue resolved |
-| `CLOSED` | Incident finalized |
+| OPEN | Incident created |
+| INVESTIGATING | Root-cause analysis in progress |
+| IN_PROGRESS | Remediation underway |
+| RESOLVED | Issue resolved |
+| CLOSED | Operationally finalized |
 
-**Severity levels:**
+### Severity Levels
 
 | Severity | Meaning |
 |---|---|
-| `LOW` | Minor operational issue |
-| `MEDIUM` | Moderate degradation |
-| `HIGH` | Significant impact |
-| `CRITICAL` | Major outage / high urgency |
+| LOW | Minor issue |
+| MEDIUM | Moderate operational degradation |
+| HIGH | Significant operational impact |
+| CRITICAL | Major outage / urgent escalation |
 
 ---
 
-### Task Orchestration
+## Task Orchestration
 
-OpsPilot includes operational task management for incident response and team execution.
+OpsPilot includes operational task management for engineering execution workflows.
 
-**Features:**
+### Features
 
-- Create tasks
+- Create operational tasks
 - Assign tasks to users
-- Link tasks to operational incidents
+- Link tasks to incidents
 - Track priorities and due dates
 - Update task status
 - View user-specific task lists
 - Receive live task updates
-- Generate task-related notifications and activity events
 
-**Task states:**
+### Task States
 
-| Status | Meaning |
+| State | Meaning |
 |---|---|
-| `TODO` | Work pending |
-| `IN_PROGRESS` | Work actively being handled |
-| `DONE` | Work completed |
+| TODO | Work pending |
+| IN_PROGRESS | Work actively handled |
+| DONE | Work completed |
 
 ---
 
-### Team Workspace
+## Team Workspace
 
-The team workspace connects incidents, users, and operational tasks into a collaborative execution environment.
+The team workspace enables collaborative operational execution.
 
-**Features:**
+### Features
 
 - Team creation and management
 - Bulk user assignment
-- Role promotion workflows
-- Team workspace visibility for operational roles
-- Team-specific task creation
-- Shared team execution view
-- Task ownership and priority tracking
+- Bulk role assignment
+- Team-based task coordination
+- Shared execution view
+- Team ownership tracking
+- Operational collaboration workflows
 
 ---
 
-### Notifications
+## Notifications System
 
-OpsPilot includes a live notification system for operational events.
+OpsPilot includes a live operational notification system.
 
-**Features:**
+### Features
 
 - Notification bell UI
 - Recent notifications API
-- Unread count API
-- Mark single notification as read
-- Mark all notifications as read
-- User-specific WebSocket topic subscription
-- Live push notifications through STOMP/SockJS
-
-Frontend clients subscribe to user-specific destinations such as:
-
-```text
-/topic/notifications/{userEmail}
-```
+- Unread notification count
+- Mark notifications as read
+- User-specific WebSocket subscriptions
+- Live push notifications using STOMP/SockJS
 
 ---
 
-### Timeline, Comments & Audit Trail
+## Timeline, Comments & Audit Trail
 
-OpsPilot records collaboration and operational history through comments, timelines, and audit-oriented services.
+OpsPilot tracks operational collaboration and activity history.
 
-**Tracked actions include:**
+### Tracked Activities
 
 - Incident creation
-- Incident status changes
-- Task creation
-- Task status updates
+- Status updates
 - Comments
+- Task updates
 - Team assignment
 - Role changes
-- Admin activity
+- Administrative actions
 
-This makes the platform useful not only for task execution but also for operational traceability.
+This provides operational traceability and audit visibility.
 
 ---
 
-## Real-Time Architecture
+# Real-Time Event Architecture
 
-OpsPilot uses **Spring WebSocket Message Broker** with **STOMP** and **SockJS** on the frontend.
+OpsPilot uses Spring WebSocket messaging with STOMP and SockJS.
 
-### Backend WebSocket Configuration
-
-The backend exposes a SockJS/STOMP endpoint:
+### Backend WebSocket Endpoint
 
 ```text
 /ws
 ```
 
-The message broker publishes to:
+### Topic Broadcasting
 
 ```text
-/topic/**
-```
-
-Application destinations use:
-
-```text
-/app/**
-```
-
-### Frontend WebSocket Client
-
-The React frontend uses:
-
-- `@stomp/stompjs`
-- `sockjs-client`
-
-The frontend maintains reusable socket connection helpers and subscribes to operational topics such as:
-
-```text
-/topic/incidents/created
-/topic/incidents/status-updated
-/topic/tasks/created
-/topic/tasks/status-updated
+/topic/incidents/**
+/topic/tasks/**
+/topic/notifications/**
 /topic/activity
-/topic/notifications/{email}
 ```
 
 ### Live Update Flow
 
 ```text
 User Action
-   ↓
+    ↓
 Spring Boot REST API
-   ↓
-Service Layer Updates Database
-   ↓
-Domain Event / Notification Created
-   ↓
-SimpMessagingTemplate Broadcast
-   ↓
-STOMP/SockJS WebSocket Topic
-   ↓
-React Client Subscription
-   ↓
-UI Updates Without Refresh
+    ↓
+Service Layer
+    ↓
+Kafka Event / Notification
+    ↓
+Kafka Consumer
+    ↓
+WebSocket Broadcast
+    ↓
+React Real-Time UI Update
 ```
-
-This enables multi-tab and multi-user live synchronization for incidents, tasks, activity feeds, and notifications.
 
 ---
 
-## Kafka Event Streaming Layer
+# Kafka Event Streaming Layer
 
 OpsPilot includes Kafka infrastructure for event-streaming workflows.
 
-### Kafka Components
+## Kafka Components
 
 - Kafka broker
 - Zookeeper
 - Topic configuration
-- Producer factory configuration
-- Consumer factory configuration
-- Kafka listener container factories
-- Event consumer services
+- Producer services
+- Consumer services
+- Listener container factories
+- Event relay architecture
 
-### Configured Topics
+## Configured Topics
 
 ```text
 incident-created
@@ -285,232 +251,274 @@ task-created
 task-status-updated
 activity-events
 comment-created
-```
-
-### Kafka-to-WebSocket Relay Pattern
-
-The backend includes Kafka listeners that consume operational events and relay them to WebSocket topics:
-
-```text
-Kafka Topic
-   ↓
-@KafkaListener Consumer
-   ↓
-SimpMessagingTemplate
-   ↓
-/topic/** WebSocket Destination
-   ↓
-React Live UI
-```
-
-> Note: The project contains a complete Kafka topic/listener infrastructure and WebSocket relay consumers. If extending this further, the next step is to route all service-layer domain events through `KafkaTemplate` before broadcasting, making Kafka the primary event bus for every operational event.
-
----
-
-## System Architecture
-
-```text
-                         ┌────────────────────────────┐
-                         │        React Frontend       │
-                         │  Vite + Router + Axios UI   │
-                         │  STOMP/SockJS Subscriptions │
-                         └──────────────┬─────────────┘
-                                        │ REST + WebSocket
-                                        ▼
-                         ┌────────────────────────────┐
-                         │      Spring Boot Backend    │
-                         │ Controllers / Services /    │
-                         │ Security / Event Publishers │
-                         └───────┬──────────┬─────────┘
-                                 │          │
-                         SQL/JPA │          │ Events
-                                 ▼          ▼
-                 ┌──────────────────┐   ┌──────────────────┐
-                 │    PostgreSQL     │   │      Kafka        │
-                 │ Users, Teams,     │   │ Event Topics &    │
-                 │ Incidents, Tasks  │   │ Consumer Relays   │
-                 └──────────────────┘   └─────────┬────────┘
-                                                   │
-                                                   ▼
-                                      ┌────────────────────────┐
-                                      │ WebSocket Broadcaster  │
-                                      │ /topic/incidents/**    │
-                                      │ /topic/tasks/**        │
-                                      │ /topic/notifications/**│
-                                      └────────────────────────┘
+notification-events
 ```
 
 ---
 
-## Backend Architecture
+# Backend Architecture
 
-The backend follows a layered architecture.
+The backend follows layered enterprise architecture principles.
 
 ```text
-apps/backend/src/main/java/com/opspilot/platform
-├── config          # Security, Kafka, WebSocket, CORS, application configuration
-├── controller      # REST API controllers
-├── dto             # Request/response DTOs
-├── events          # Domain event models
-├── exception       # Global exception handling
-├── model/entity    # JPA domain entities
-├── repository      # Spring Data repositories
-├── security        # JWT, filters, user details, auth utilities
-└── service         # Business logic, workflows, notifications, timelines
+apps/platform-api/src/main/java/com/opspilot/platform
+├── config
+├── controller
+├── dto
+├── events
+├── exception
+├── model/entity
+├── repository
+├── security
+└── service
 ```
 
-### Backend Concepts Demonstrated
+## Backend Concepts Demonstrated
 
 - RESTful API design
-- DTO-based request/response separation
+- DTO separation
 - Service-layer business logic
 - Repository abstraction
 - JPA/Hibernate persistence
 - JWT security filters
 - Role-based authorization
+- Kafka event publishing
+- WebSocket broadcasting
 - Rate limiting
-- WebSocket message broadcasting
-- Kafka consumers and listener container factories
-- Global exception handling
-- Database migration management
+- Operational workflow modeling
 
 ---
 
-## Frontend Architecture
+# Frontend Architecture
 
-The frontend is built with React and Vite.
+The frontend is built using React + Vite.
 
 ```text
-apps/frontend/src
-├── api             # Axios API clients
-├── components      # Shared UI components
-├── hooks           # Live update and notification hooks
-├── pages           # Route-level pages
-├── utils           # Auth helpers and utilities
-└── websocket       # STOMP/SockJS socket client
+apps/web-app/src
+├── api
+├── components
+├── hooks
+├── pages
+├── utils
+└── websocket
 ```
 
-### Frontend Concepts Demonstrated
+## Frontend Concepts Demonstrated
 
 - Protected route handling
-- Role-aware sidebar rendering
+- Role-aware rendering
 - API abstraction layer
 - Live notification hooks
 - STOMP topic subscriptions
-- Incident dashboard UI
+- Dashboard UI
 - Team workspace UI
-- Admin management UI
-- Task ownership views
+- Incident workflow UI
+- Operational activity feeds
 
 ---
 
-## Tech Stack
+# Tech Stack
 
-### Frontend
+## Frontend
 
 | Technology | Purpose |
 |---|---|
 | React 19 | UI framework |
-| Vite | Build tool and dev server |
-| React Router | Client-side routing |
-| Axios | REST API communication |
-| STOMP.js | WebSocket messaging client |
-| SockJS | Browser-compatible WebSocket fallback |
+| Vite | Build tool |
+| React Router | Routing |
+| Axios | REST communication |
+| STOMP.js | WebSocket messaging |
+| SockJS | Browser WebSocket fallback |
 
-### Backend
+---
+
+## Backend
 
 | Technology | Purpose |
 |---|---|
 | Java 17 | Backend language |
 | Spring Boot | API framework |
-| Spring Security | Authentication and authorization |
+| Spring Security | Authentication & authorization |
 | JWT | Stateless API security |
 | Spring Data JPA | ORM/data access |
-| Hibernate | Entity persistence |
+| Hibernate | Persistence |
 | PostgreSQL | Relational database |
 | Flyway | Database migrations |
 | Spring WebSocket | Real-time messaging |
 | Kafka | Event-streaming infrastructure |
 | Redis | Cache/rate-limit infrastructure |
-| Maven | Backend dependency management |
+| Maven | Dependency management |
 
-### DevOps / Infrastructure
+---
+
+## DevOps / Infrastructure
 
 | Technology | Purpose |
 |---|---|
 | Docker | Containerization |
 | Docker Compose | Multi-service orchestration |
-| AWS EC2 | Cloud deployment target |
-| Terraform structure | Infrastructure-as-code organization |
+| AWS EC2 | Deployment target |
+| Terraform Structure | Infrastructure organization |
 | Swagger/OpenAPI | API documentation |
 | Spring Actuator | Health monitoring |
 
 ---
 
-## Dockerized Services
+# Dockerized Services
 
-The production compose setup runs the following services:
+The production Docker setup runs:
 
 | Service | Purpose |
 |---|---|
-| `opspilot-frontend` | React frontend served through containerized web server |
-| `opspilot-backend` | Spring Boot REST + WebSocket API |
-| `opspilot-postgres` | PostgreSQL database |
-| `opspilot-redis` | Redis runtime service |
-| `opspilot-kafka` | Kafka broker |
-| `opspilot-zookeeper` | Kafka coordination |
+| opspilot-frontend | React frontend |
+| opspilot-backend | Spring Boot API |
+| opspilot-postgres | PostgreSQL database |
+| opspilot-redis | Redis runtime |
+| opspilot-kafka | Kafka broker |
+| opspilot-zookeeper | Kafka coordination |
 
 ---
 
-## API Documentation
+# API Documentation
 
-Swagger/OpenAPI is available when the backend is running:
+Swagger/OpenAPI is available when backend services are running.
 
 ```text
 http://localhost:8080/swagger-ui/index.html
 ```
 
-The API includes controllers for:
-
-- Authentication
-- Incidents
-- Tasks
-- Teams
-- Team workspace
-- Notifications
-- Activity feed
-- Timeline/audit views
-- Admin management
-
 ---
 
-## Health Monitoring
+# Health Monitoring
 
-Spring Boot Actuator exposes health status for operational readiness:
+Spring Boot Actuator exposes health endpoints:
 
 ```text
 GET /actuator/health
 ```
 
-The health endpoint validates key runtime dependencies such as database connectivity, disk space, mail integration, and application liveness.
+The endpoint validates:
+
+- Database connectivity
+- Disk space
+- Mail integration
+- Application liveness
 
 ---
 
-## Database Migrations
+# Database Migrations
 
-Flyway migrations are stored at:
+Flyway migrations are located at:
 
 ```text
-apps/backend/src/main/resources/db/migration
+apps/platform-api/src/main/resources/db/migration
 ```
 
-This provides version-controlled schema evolution for users, roles, incidents, teams, tasks, notifications, comments, timelines, and audit data.
+This enables version-controlled schema evolution.
 
 ---
 
-## Local Development Setup
+# Application Screenshots
 
-### Prerequisites
+## Authentication
+
+### Login Page
+
+![Login](.docs/screenshots/login-page.png)
+
+### Registration Page
+
+![Register](.docs/screenshots/register-page.png)
+
+---
+
+## Incident Management
+
+### Incident Dashboard
+
+![Incident Dashboard](.docs/screenshots/incident-dashboard.png)
+
+### Incident Comments
+
+![Incident Comments](.docs/screenshots/incident-comment-modal.png)
+
+---
+
+## Team Operations
+
+### Team Management
+
+![Team Management](.docs/screenshots/team-management.png)
+
+### Team Workspace
+
+![Team Workspace](.docs/screenshots/team-workspace.png)
+
+### Task Assignment
+
+![Task Assignment](.docs/screenshots/task-assignment.png)
+
+---
+
+## Notifications & Activity
+
+### Live Notifications
+
+![Notifications](.docs/screenshots/notifications-panel.png)
+
+### Operational Dashboard
+
+![Dashboard](.docs/screenshots/dashboard.png)
+
+---
+
+## API Documentation
+
+### Swagger/OpenAPI
+
+![Swagger](.docs/screenshots/swagger-api.png)
+
+---
+
+## Deployment & Infrastructure
+
+### Docker Containers & Health Checks
+
+![Docker Health](.docs/screenshots/docker-health-check.png)
+
+---
+
+# Project Structure
+
+```text
+opspilot-platform/
+│
+├── apps/
+│   ├── platform-api/
+│   └── web-app/
+│
+├── infra/
+│   ├── docker/
+│   └── terraform/
+│
+├── scripts/
+│
+├── .docs/
+│   ├── architecture/
+│   ├── screenshots/
+│   ├── api/
+│   └── runbooks/
+│
+├── docker-compose.yml
+├── docker-compose.kafka.yml
+└── README.md
+```
+
+---
+
+# Local Development Setup
+
+## Prerequisites
 
 - Java 17
 - Maven
@@ -518,148 +526,110 @@ This provides version-controlled schema evolution for users, roles, incidents, t
 - Docker Desktop
 - Git
 
-### Clone Repository
+---
+
+## Clone Repository
 
 ```bash
-git clone https://github.com/rahulreddyin/opspilot-platform.git
+git clone https://github.com/rahulreddyin7/opspilot-platform.git
 cd opspilot-platform
 ```
 
-### Start with Docker Compose
+---
+
+## Start with Docker Compose
 
 ```bash
 docker compose up --build
 ```
 
-### Local URLs
+---
+
+# Local URLs
 
 | Service | URL |
 |---|---|
-| Frontend | `http://localhost:5173` |
-| Backend | `http://localhost:8080` |
-| Swagger UI | `http://localhost:8080/swagger-ui/index.html` |
-| Health Check | `http://localhost:8080/actuator/health` |
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:8080 |
+| Swagger UI | http://localhost:8080/swagger-ui/index.html |
+| Health Check | http://localhost:8080/actuator/health |
 
 ---
 
-## Production Deployment Notes
+# Production Deployment Notes
 
-The repository includes a production-oriented Docker Compose file:
-
-```bash
-docker compose -f docker-compose.prod.yml up -d --build
-```
-
-Production configuration supports:
+Production deployment supports:
 
 - Externalized environment variables
-- EC2 public IP configuration
 - Docker network isolation
-- Restart policies
-- PostgreSQL persistent volume
-- Backend, frontend, Redis, Kafka, Zookeeper orchestration
-- Mail credentials through environment variables
-- JWT secret through environment variables
+- EC2 deployment
+- Persistent PostgreSQL volumes
+- Kafka orchestration
+- Redis integration
+- Mail integration
+- JWT secret configuration
 
-Sensitive values such as database passwords, JWT secrets, mail credentials, and cloud keys should be stored outside Git using environment variables or secret managers.
-
----
-
-## Example Operational Workflow
-
-```text
-Admin creates users and assigns roles
-   ↓
-Admin creates Platform Reliability Team
-   ↓
-Incident Manager creates production incident
-   ↓
-Incident owner updates status to INVESTIGATING
-   ↓
-Team tasks are created and assigned
-   ↓
-Notifications are delivered in real time
-   ↓
-Activity feed and timeline are updated
-   ↓
-Incident is resolved and audit trail remains available
-```
+Sensitive secrets should be managed using environment variables or secret managers.
 
 ---
 
-## Screenshots
+# Engineering Concepts Demonstrated
 
-![alt text](<Screenshot (88).png>)
-
-![alt text](<Screenshot (89).png>)
-
-![alt text](<Screenshot (97).png>)
-
-![alt text](<Screenshot (102).png>)
-
-![alt text](<Screenshot (105).png>)
-
-![alt text](<Screenshot (112).png>)
-
-![alt text](<Screenshot (113).png>)
-
-![alt text](<Screenshot (108).png>)
-
-![alt text](<Screenshot (124).png>)
-
-![alt text](<Screenshot (126).png>)
-
-
-```
-
----
-
-## Engineering Concepts Demonstrated
-
-- Full-stack application architecture
-- Secure JWT authentication
+- Full-stack enterprise application architecture
+- JWT-based authentication
 - Role-based authorization
-- Event-oriented service design
-- WebSocket real-time client synchronization
+- Event-driven service design
 - Kafka listener/topic infrastructure
-- Operational workflow modeling
+- WebSocket real-time synchronization
 - Team collaboration workflows
-- Notification systems
-- Timeline and audit tracking
+- Incident lifecycle management
+- Operational audit tracking
 - Dockerized deployment
-- Cloud deployment readiness
+- Health monitoring
+- API documentation
 - Database migration/versioning
-- API documentation with Swagger
-- Health monitoring with Actuator
+- Cloud deployment readiness
 
 ---
 
-## Future Enhancements
+# Future Enhancements
 
-- Route all domain events through Kafka producers for a fully Kafka-first event bus
-- Add Kubernetes manifests or Helm charts
-- Add CI/CD pipeline using GitHub Actions or Jenkins
-- Add Nginx reverse proxy with HTTPS
-- Add Prometheus and Grafana monitoring
-- Add dashboard analytics and charts
-- Add SLA/MTTR calculations
-- Add file attachments for incident evidence
-- Add dead-letter queues and retry handling for Kafka events
-- Add multi-tenant organization support
-- Add AI-assisted incident summaries and root-cause suggestions
-
----
-
-## Resume-Ready Summary
-
-**OpsPilot Platform** is a cloud-native real-time incident response and team operations platform built with Spring Boot, React, PostgreSQL, Redis, Kafka, WebSockets, Docker, and JWT-based RBAC. It supports secure authentication, incident lifecycle management, task orchestration, team workspaces, live notifications, activity feeds, audit timelines, and Dockerized AWS-ready deployment.
+- Kubernetes deployment manifests
+- Helm chart support
+- CI/CD pipeline integration
+- HTTPS reverse proxy integration
+- Prometheus + Grafana monitoring
+- SLA/SLO dashboards
+- Multi-tenant organization support
+- File attachment support
+- AI-assisted incident summarization
+- Retry and dead-letter Kafka flows
 
 ---
 
-## Author
+# Resume-Ready Summary
 
-**Rahul Reddy**
+OpsPilot is a production-style cloud-native operational platform inspired by real-world DevOps, SRE, and incident-response systems.
 
-GitHub: `https://github.com/rahulreddyin`
+The project demonstrates:
+
+- Enterprise backend architecture
+- Real-time distributed systems
+- Event-driven design
+- Kafka/WebSocket integration
+- JWT security
+- Operational workflow modelingcd C:\Users\rahul\OneDrive\Documents\backend-projects\opspilot-platform
+- Dockerized infrastructure
+- Full-stack engineering practices
 
 ---
+
+# Author
+
+Rahul Reddy Puli
+
+GitHub:
+https://github.com/rahulreddyin7
+
+LinkedIn:
+https://www.linkedin.com/in/rahulreddyin7/
