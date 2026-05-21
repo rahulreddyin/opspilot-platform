@@ -591,19 +591,25 @@ Incident is resolved and audit trail remains available
 
 ![alt text](<Screenshot (88).png>)
 
-1. Login / registration page
-2. Admin team management
-3. Incident dashboard with multiple statuses
-4. Incident detail view with comments and timeline
-5. Team workspace with assigned operational tasks
-6. Notification drawer with unread alerts
-7. Swagger API documentation
-8. Docker containers running on EC2
-9. Actuator health endpoint showing `UP`
-10. Docker stats / runtime container proof
+![alt text](<Screenshot (89).png>)
 
-```text
-Add screenshots under docs/screenshots/ and reference them here.
+![alt text](<Screenshot (97).png>)
+
+![alt text](<Screenshot (102).png>)
+
+![alt text](<Screenshot (105).png>)
+
+![alt text](<Screenshot (112).png>)
+
+![alt text](<Screenshot (113).png>)
+
+![alt text](<Screenshot (108).png>)
+
+![alt text](<Screenshot (124).png>)
+
+![alt text](<Screenshot (126).png>)
+
+
 ```
 
 ---
