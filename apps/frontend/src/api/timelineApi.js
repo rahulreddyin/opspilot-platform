@@ -7,7 +7,7 @@ const authHeaders = () => ({
 
 export const getIncidentTimeline = async (incidentId) => {
   const response = await axios.get(
-    `http://localhost:8080/api/v1/incidents/${incidentId}/timeline`,
+    `http://98.94.8.79:8080/api/v1/incidents/${incidentId}/timeline`,
     {
       headers: authHeaders(),
     }
@@ -17,7 +17,7 @@ export const getIncidentTimeline = async (incidentId) => {
 
 export const getTaskTimeline = async (taskId) => {
   const response = await axios.get(
-    `http://localhost:8080/api/v1/tasks/${taskId}/timeline`,
+    `http://98.94.8.79:8080/api/v1/tasks/${taskId}/timeline`,
     {
       headers: authHeaders(),
     }

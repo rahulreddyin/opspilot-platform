@@ -9,7 +9,7 @@ export function connectWebSocket(onConnected, onError) {
   }
 
   stompClient = new Client({
-    webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
+    webSocketFactory: () => new SockJS("http://98.94.8.79:8080/ws"),
     reconnectDelay: 5000,
     debug: () => {},
     onConnect: () => {

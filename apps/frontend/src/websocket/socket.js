@@ -1,7 +1,7 @@
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
-const WS_BASE_URL = "http://localhost:8080/ws";
+const WS_BASE_URL = "http://98.94.8.79:8080/ws";
 
 let stompClient = null;
 let connectPromise = null;

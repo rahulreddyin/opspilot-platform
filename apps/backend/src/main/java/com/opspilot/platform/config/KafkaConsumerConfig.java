@@ -23,7 +23,10 @@ public class KafkaConsumerConfig {
 
     private Map<String, Object> baseConsumerConfig() {
         Map<String, Object> config = new HashMap<>();
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:29092");
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, System.getenv("SPRING_KAFKA_BOOTSTRAP_SERVERS"));
+        config.put("security.protocol", System.getenv("SPRING_KAFKA_PROPERTIES_SECURITY_PROTOCOL"));
+        config.put("sasl.mechanism", System.getenv("SPRING_KAFKA_PROPERTIES_SASL_MECHANISM"));
+        config.put("sasl.jaas.config", System.getenv("SPRING_KAFKA_PROPERTIES_SASL_JAAS_CONFIG"));
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "opspilot-group");
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);

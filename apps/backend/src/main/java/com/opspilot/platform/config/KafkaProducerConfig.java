@@ -18,7 +18,10 @@ public class KafkaProducerConfig {
     @Bean
     public ProducerFactory<String, Object> producerFactory() {
         Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:29092");
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, System.getenv("SPRING_KAFKA_BOOTSTRAP_SERVERS"));
+        config.put("security.protocol", System.getenv("SPRING_KAFKA_PROPERTIES_SECURITY_PROTOCOL"));
+        config.put("sasl.mechanism", System.getenv("SPRING_KAFKA_PROPERTIES_SASL_MECHANISM"));
+        config.put("sasl.jaas.config", System.getenv("SPRING_KAFKA_PROPERTIES_SASL_JAAS_CONFIG"));
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return new DefaultKafkaProducerFactory<>(config);

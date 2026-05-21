@@ -7,7 +7,10 @@ function Layout({ children }) {
 
   const adminUser = isAdmin();
   const roles = getCurrentUserRoles();
-const teamLeadUser = roles.includes("TEAM_LEAD");
+const workspaceUser =
+  roles.includes("TEAM_LEAD") ||
+  roles.includes("INCIDENT_MANAGER") ||
+  roles.includes("ADMIN");
 
   const isActive = (path) => location.pathname.startsWith(path);
 
@@ -37,7 +40,7 @@ const teamLeadUser = roles.includes("TEAM_LEAD");
               Incidents
             </Link>
 
-            {teamLeadUser && (
+            {workspaceUser && (
   <Link
     to="/team/workspace"
     style={isActive("/team/workspace") ? activeLinkStyle : linkStyle}
