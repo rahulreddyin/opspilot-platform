@@ -1,11 +1,7 @@
-server:
-  port: ${SERVER_PORT:8080}
-
 app:
   email-verification:
-    base-url: ${APP_EMAIL_VERIFICATION_BASE_URL:http://localhost:8080}
-    from-email: ${APP_EMAIL_FROM:your-email@gmail.com}
-
+    base-url: ${APP_EMAIL_VERIFICATION_BASE_URL:http://98.94.8.79:8080}
+    from-email: ${APP_EMAIL_FROM:test@gmail.com}
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/opspilot}
@@ -18,7 +14,23 @@ spring:
     show-sql: true
 
   kafka:
-    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+
+    properties:
+      security.protocol: ${SPRING_KAFKA_PROPERTIES_SECURITY_PROTOCOL}
+      sasl.mechanism: ${SPRING_KAFKA_PROPERTIES_SASL_MECHANISM}
+      sasl.jaas.config: ${SPRING_KAFKA_PROPERTIES_SASL_JAAS_CONFIG}
+
+    consumer:
+      group-id: opspilot-group
+      auto-offset-reset: earliest
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+    listener:
+      missing-topics-fatal: false
 
   mail:
     host: smtp.gmail.com
@@ -38,3 +50,11 @@ logging:
     org.springframework.boot.autoconfigure.mail: INFO
     jakarta.mail: INFO
     javax.mail: INFO
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
